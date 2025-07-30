@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="master.css">
+    <link rel="stylesheet" href="assets/style/output.css">
+    <link rel="stylesheet" href="assets/font/css/fontello.css">
+</head>
+
+<body class="relative h-[100vh] flex flex-wrap justify-center items-center bg-black">
+
+    <section id="results"
+        class="absolute hidden justify-center items-center border-white border-2 text-white top-10 left-1/3 w-1/3 h-[80px] p-3 rounded-2xl text-3xl ">
+        <h2></h2>
+    </section>
+
+
+    <section id="main"
+        class=" *:flex w-[500px] h-[500px] p-3 *:*:border-white *:w-full *:h-1/3 *:*:cursor-pointer *:*:duration-300 *:*:w-1/3 *:*:justify-center *:*:items-center *:*:flex *:*:text-9xl *:*:text-white">
+        <div id="firstRow">
+            <span class="border-r-2 border-b-2"></span>
+            <span></span>
+            <span class="border-b-2 border-l-2"></span>
+        </div>
+        <div id="secoundRow">
+            <span></span>
+            <span class="border-2"></span>
+            <span></span>
+        </div>
+        <div id="thirdRow">
+            <span class="border-t-2 border-r-2"></span>
+            <span></span>
+            <span class="border-t-2 border-l-2"></span>
+        </div>
+    </section>
+
+
+
+    <section
+        class="w-1/3 h-[80px] absolute bottom-15 left-1/3 flex *:text-3xl *:rounded-2xl *:cursor-pointer *:text-white *:w-1/2 *:mx-2 *:border-2 *:border-white">
+        <button id="reset">Restart</button>
+
+
+        <button id="player">one player</button>
+    </section>
+
+
+    <figure class="group z-50 w-[150px] h-[150px] absolute bottom-[40px] left-[25px] *:text-white ">
+
+
+        <img class="w-full h-full object-cover absolute top-0 left-0 firstAnime" src="assets/img/me.JPG" alt="">
+
+        <figcaption class="font-[caveat] absolute -bottom-[25px] left-0 text-[18px] text-[rgb(148, 87, 67)]">Nastaran
+            Ghorbanpour</figcaption>
+
+        <a href="https://github.com/NastaranGhorbanpour"
+            class="icon-github-circled decoration-0 w-[15px] h-[15px] absolute right-[40%] text-[20px] -z-10 duration-1000 delay-500 group-hover:delay-0 text-[rgb(85, 57, 21)] hover:text-[rgb(148, 87, 67)] bottom-[20px] group-hover:-right-[20%] group-hover:z-50"></a>
+        <a href="https://www.linkedin.com/in/nastaran-ghorbanpour-027a7b349/"
+            class="icon-linkedin decoration-0 w-[15px] h-[15px] absolute right-[40%] text-[20px] -z-10 duration-1000 delay-500 group-hover:delay-0 text-[rgb(85, 57, 21)] hover:text-[rgb(148, 87, 67)] bottom-[70px] group-hover:-right-[20%] group-hover:z-50"></a>
+        <a href="https://www.instagram.com/nestacode.lab/"
+            class="icon-instagram decoration-0 w-[15px] h-[15px] absolute right-[40%] text-[20px] -z-10 duration-1000 delay-500 group-hover:delay-0 text-[rgb(85, 57, 21)] hover:text-[rgb(148, 87, 67)] bottom-[120px] group-hover:-right-[20%] group-hover:z-50"></a>
+    </figure>
+
+</body>
+<script>
+    const allSpans = document.querySelectorAll('#main span');
+    const results = document.getElementById('results')
+    const resetBtn = document.getElementById('reset')
+    const player = document.getElementById('player')
+
+    player.addEventListener('click', () => {
+        player.innerHTML = 'two players'
+    })
+
+    getInput()
+    let turn = 'x'
+    let gameOver = false
+
+
+
+    function getInput() {
+        allSpans.forEach((val) => {
+            val.addEventListener('click', () => {
+                if (gameOver) return
+
+                if (val.innerHTML == '') {
+                    val.innerHTML = turn
+
+
+
+                    if (winningCounditions() == '') {
+                        if (!hasEmptyCell()) {
+                            drow()
+                            gameOver = true
+                        }
+                        turn = turn == 'x' ? 'o' : 'x'
+                    } else {
+                        console.log(winningCounditions());
+                        results.classList.replace('hidden', 'flex')
+                        results.children[0].innerHTML = winningCounditions()
+                        gameOver = true
+
+                    }
+                    if (player.innerHTML == 'one player') {
+                        if (turn == 'o') {
+                            computerTurn()
+                            turn = turn == 'x' ? 'o' : 'x'
+                        }
+                    }
+
+
+                }
+
+            })
+        })
+    }
+
+    function computerTurn() {
+        let EmptyCells = []
+        for (let i = 0; i < allSpans.length; i++) {
+            if (allSpans[i].innerHTML == '') EmptyCells.push(i)
+
+        }
+        let randomCell = EmptyCells[Math.floor(Math.random() * EmptyCells.length)]
+        allSpans[randomCell].innerHTML = 'o'
+    }
+
+
+    resetBtn.addEventListener('click', () => {
+        allSpans.forEach((val) => {
+            val.innerHTML = ''
+            val.classList.remove('bg-green-400!')
+        })
+        turn = 'x'
+        gameOver = false
+        results.classList.replace('flex', 'hidden')
+    })
+
+    function hasEmptyCell() {
+
+        let counter = 0
+        allSpans.forEach((val) => {
+            if (val.innerHTML == '') {
+                counter++
+            }
+        })
+
+        return counter != 0 ? true : false
+
+    }
+
+    function drow() {
+        results.classList.replace('hidden', 'flex')
+        results.children[0].innerHTML = 'End game, Drow'
+
+    }
+
+    function winningCounditions() {
+        const containars = document.querySelectorAll('#main>div')
+        const firstRow = document.querySelectorAll('#firstRow>span')
+        const secoundRow = document.querySelectorAll('#secoundRow>span')
+        const thirdRow = document.querySelectorAll('#thirdRow>span')
+
+        let winner = ''
+
+        for (let val of containars) {
+            if (val.children[0].innerHTML !== '' && val.children[0].innerHTML === val.children[1].innerHTML && val.children[0].innerHTML === val.children[2].innerHTML) {
+                val.children[0].classList.add('bg-green-400!')
+                val.children[1].classList.add('bg-green-400!')
+                val.children[2].classList.add('bg-green-400!')
+                winner = 'End game, player ' + val.children[1].innerHTML + ' is the winner'
+                return winner
+            }
+        }
+
+        if (firstRow[0].innerHTML !== '' && firstRow[0].innerHTML === secoundRow[1].innerHTML && firstRow[0].innerHTML === thirdRow[2].innerHTML) {
+            firstRow[0].classList.add('bg-green-400!')
+            secoundRow[1].classList.add('bg-green-400!')
+            thirdRow[2].classList.add('bg-green-400!')
+            winner = 'End game, player ' + firstRow[0].innerHTML + ' is the winner'
+            return winner
+        } else if (firstRow[2].innerHTML !== '' && firstRow[2].innerHTML === secoundRow[1].innerHTML && firstRow[2].innerHTML === thirdRow[0].innerHTML) {
+            firstRow[2].classList.add('bg-green-400!')
+            secoundRow[1].classList.add('bg-green-400!')
+            thirdRow[0].classList.add('bg-green-400!')
+            winner = 'End game, player ' + firstRow[2].innerHTML + ' is the winner'
+            return winner
+        }
+
+        for (let i = 0; i < 3; i++) {
+            if (firstRow[i].innerHTML !== '' && firstRow[i].innerHTML === secoundRow[i].innerHTML && firstRow[i].innerHTML === thirdRow[i].innerHTML) {
+                firstRow[i].classList.add('bg-green-400!')
+                secoundRow[i].classList.add('bg-green-400!')
+                thirdRow[i].classList.add('bg-green-400!')
+                winner = 'End game, player ' + firstRow[i].innerHTML + ' is the winner'
+                return winner
+            }
+        }
+
+        return winner
+
+    }
+
+</script>
+
+</html>
