@@ -19,21 +19,21 @@
 
 
     <section id="main"
-        class=" *:flex w-[500px] h-[500px] p-3 *:*:border-white *:w-full *:h-1/3 *:*:cursor-pointer *:*:duration-300 *:*:w-1/3 *:*:justify-center *:*:items-center *:*:flex *:*:text-9xl *:*:text-white">
-        <div id="firstRow">
-            <span class="border-r-2 border-b-2"></span>
+        class=" *:flex w-[500px] h-[500px] p-3 *:border-white *:w-full *:h-1/3 *:*:cursor-pointer *:*:duration-300 *:*:w-1/3 *:*:justify-center *:*:items-center *:*:flex *:*:text-9xl *:*:text-white">
+        <div id="firstRow" class="border-b-2">
+            <span class="border-r-2"></span>
             <span></span>
-            <span class="border-b-2 border-l-2"></span>
+            <span class="border-l-2"></span>
         </div>
         <div id="secoundRow">
-            <span></span>
-            <span class="border-2"></span>
-            <span></span>
+            <span class="border-r-2"></span>
+            <span ></span>
+            <span class="border-l-2"></span>
         </div>
-        <div id="thirdRow">
-            <span class="border-t-2 border-r-2"></span>
+        <div id="thirdRow" class="border-t-2">
+            <span class="border-r-2"></span>
             <span></span>
-            <span class="border-t-2 border-l-2"></span>
+            <span class="border-l-2"></span>
         </div>
     </section>
 
@@ -98,7 +98,6 @@
                         }
                         turn = turn == 'x' ? 'o' : 'x'
                     } else {
-                        console.log(winningCounditions());
                         results.classList.replace('hidden', 'flex')
                         results.children[0].innerHTML = winningCounditions()
                         gameOver = true
@@ -107,7 +106,14 @@
                     if (player.innerHTML == 'one player') {
                         if (turn == 'o') {
                             computerTurn()
+                            if(winningCounditions() == ''){
                             turn = turn == 'x' ? 'o' : 'x'
+
+                            }else{
+                                                        results.classList.replace('hidden', 'flex')
+                        results.children[0].innerHTML = winningCounditions()
+                        gameOver = true
+                            }
                         }
                     }
 
